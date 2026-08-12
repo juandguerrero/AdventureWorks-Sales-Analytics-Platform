@@ -26,6 +26,37 @@ This made it difficult for management to answer fundamental commercial questions
 
 I built an **end-to-end analytics platform** that transforms the raw operational data into an analytics-ready Star Schema, applies business-focused SQL analysis, and presents the results through six Power BI dashboards.
 
+---
+
+# Key Business Findings
+
+The analysis revealed several clear patterns in Adventure Works' commercial performance:
+
+- **Spring was the strongest sales season**, generating **$29.52M (26.87%)**, while Winter was the weakest at **$25.22M (22.96%)**.
+- **Bikes generated approximately 87.7% of product-category revenue**, making them by far the company's main revenue driver.
+- **Southwest was the top-performing territory**, with approximately **$24M in revenue**.
+- **Linda C. Mitchell was the highest-revenue salesperson**, generating approximately **$10.3M**.
+- **Potential Customers and Loyal Customers were the largest RFM segments**, while At-Risk and Lost Customers represented clear retention opportunities.
+- Most customers were classified as **Low or Medium churn risk**, with a much smaller High-Risk group.
+- Sales were strongest on **Sunday and Tuesday**, while Thursday showed the lowest sales volume among the weekdays analyzed.
+
+---
+
+# Business Recommendations
+
+Based on these findings, Adventure Works should:
+
+- **Protect and grow the core bicycle business**, since Bikes account for the vast majority of revenue.
+- **Use accessories and clothing to increase basket size** through cross-selling and product bundles.
+- **Prioritize Southwest and other high-growth territories** while investigating weaker regions for expansion opportunities.
+- **Replicate top salesperson practices** by comparing high performers with territory benchmarks.
+- **Target At-Risk and Lost Customers with retention campaigns**, while using Potential Customers for repeat-purchase strategies.
+- **Align promotions and inventory planning with stronger seasons and sales days**.
+
+---
+
+# Architecture
+
 ```text
 AdventureWorks Data
         ↓
@@ -47,15 +78,15 @@ Bronze → Silver → Gold
 
 The complete workflow is orchestrated with **Apache Airflow**.
 
+![Architecture Diagram](docs/architecture/architecture_diagram.png)
+
 ---
 
-# Key Business Findings
+# Detailed Business Findings
 
 ## 1. Sales show clear seasonal and weekly patterns
 
 ![Executive Sales Dashboard](docs/dashboards/executive_sales_dashboard.png)
-
-The analysis revealed meaningful differences in sales depending on both the season and day of the week.
 
 ### Findings
 
@@ -77,8 +108,6 @@ Adventure Works can use these patterns to better align **inventory, promotions, 
 
 ![Product Analytics](docs/dashboards/product_analytics.png)
 
-Product analysis shows that Adventure Works' revenue depends heavily on its core bicycle business.
-
 ### Findings
 
 - **Bikes generate approximately 87.7% of product-category revenue.**
@@ -92,7 +121,7 @@ Product analysis shows that Adventure Works' revenue depends heavily on its core
 
 Bicycles are clearly the company's primary revenue engine.
 
-At the same time, the much smaller contribution from accessories and clothing suggests opportunities to increase **cross-selling and basket size**, while high-revenue/low-margin products deserve additional pricing and profitability analysis.
+At the same time, the smaller contribution from accessories and clothing suggests opportunities to increase **cross-selling and average basket size**, while high-revenue/low-margin products deserve additional pricing and profitability analysis.
 
 ---
 
@@ -100,15 +129,13 @@ At the same time, the much smaller contribution from accessories and clothing su
 
 ![Sales Territory](docs/dashboards/sales_territory.png)
 
-Sales performance varies substantially across geographic markets.
-
 ### Findings
 
 - **Southwest is the largest territory**, generating approximately **$24M in revenue**.
 - **Canada and Northwest** form the next strongest group at approximately **$16M each**.
 - Australia follows at approximately **$11M**.
 - Germany is the lowest-revenue territory among those analyzed.
-- Current revenue is higher than previous-year revenue across the territories shown in the comparison.
+- Current revenue is higher than previous-year revenue across the territories shown.
 - Year-over-year analysis reveals substantial differences in growth trajectories between markets.
 
 ### Business Implication
@@ -122,8 +149,6 @@ Southwest represents a critical revenue market, while lower-volume territories c
 ## 4. Sales performance is concentrated among several top representatives
 
 ![Salesperson Performance](docs/dashboards/salesperson_performance.png)
-
-Salespeople were evaluated not only by total revenue but also against the average performance of their respective territories.
 
 ### Findings
 
@@ -144,8 +169,6 @@ The strongest representatives can be studied to identify successful sales practi
 ## 5. Customer value is unevenly distributed
 
 ![Customer Analytics](docs/dashboards/customer_analytics.png)
-
-Customer-level analysis reveals significant differences in lifetime value and engagement.
 
 ### Findings
 
@@ -168,9 +191,9 @@ High-value customers showing declining engagement should receive particular atte
 
 ![Customer Segmentation](docs/dashboards/customer_segmentation.png)
 
-I used **RFM analysis — Recency, Frequency, and Monetary Value —** to segment customers according to their purchasing behavior.
+I used **RFM Analysis — Recency, Frequency, and Monetary Value —** to segment customers according to purchasing behavior.
 
-Customers were classified into groups including:
+Customers were classified into:
 
 - Champions
 - Loyal Customers
@@ -189,7 +212,7 @@ Customers were classified into groups including:
 
 ### Business Implication
 
-Instead of using the same strategy for every customer, Adventure Works can develop segment-specific actions:
+Adventure Works can use different strategies for each segment:
 
 **Champions →** loyalty and VIP programs  
 **Loyal Customers →** cross-selling and retention  
@@ -197,53 +220,6 @@ Instead of using the same strategy for every customer, Adventure Works can devel
 **New Customers →** onboarding and second-purchase campaigns  
 **At Risk →** targeted retention campaigns  
 **Lost Customers →** reactivation campaigns
-
----
-
-# From Business Problem to Solution
-
-The project transformed fragmented operational data into a centralized analytical environment:
-
-| Business Problem | Analytical Solution |
-|---|---|
-| Difficult to understand sales trends | Monthly, seasonal and weekday sales analysis |
-| Limited visibility into customer value | Customer lifetime revenue and Pareto analysis |
-| No behavioral customer segmentation | RFM segmentation |
-| Difficult to identify retention opportunities | Churn-risk and inactive-customer analysis |
-| Limited understanding of product contribution | Category and product revenue analysis |
-| Cross-selling opportunities unclear | Frequently Bought Together analysis |
-| Regional performance difficult to compare | Territory revenue and YoY analysis |
-| Salespeople difficult to benchmark fairly | Salesperson vs. territory-average analysis |
-
----
-
-# Data Model
-
-I transformed the operational data into an analytics-ready **Star Schema** designed for SQL analysis and Power BI reporting.
-
-![Star Schema](docs/architecture/star_schema.png)
-
-The dimensional model provides consistent customer, product, territory, salesperson, and date dimensions for business analysis.
-
----
-
-# Architecture
-
-![Architecture Diagram](docs/architecture/architecture_diagram.png)
-
-The analytics platform follows a modern cloud architecture:
-
-**AWS S3 → Python → Databricks → PySpark → Delta Lake → SQL → Power BI**
-
-Databricks implements a **Medallion Architecture**:
-
-- **Bronze:** raw source data
-- **Silver:** cleaned and standardized data
-- **Gold:** analytics-ready Star Schema
-
-The complete workflow is orchestrated using **Apache Airflow**.
-
-![Airflow Pipeline](docs/architecture/airflow_pipeline.png)
 
 ---
 
@@ -269,6 +245,16 @@ The analytical layer includes SQL models for:
 ### SQL Techniques
 
 `CTEs` · `Window Functions` · `LAG()` · `LEAD()` · `DENSE_RANK()` · `NTILE()` · `CASE` · `Self Joins` · `Subqueries` · `Aggregations` · `Date Functions`
+
+---
+
+# Data Model
+
+The Gold layer uses an analytics-ready **Star Schema** designed for SQL analysis and Power BI reporting.
+
+![Star Schema](docs/architecture/star_schema.png)
+
+The dimensional model provides consistent customer, product, territory, salesperson, and date dimensions for business analysis.
 
 ---
 
@@ -360,15 +346,6 @@ AdventureWorks/
 # Project Outcome
 
 Adventure Works' fragmented operational data was transformed into a **centralized analytics platform with six decision-focused Power BI dashboards**.
-
-The analysis showed that:
-
-- **Spring is the strongest sales season at $29.52M**
-- **Bikes account for approximately 87.7% of product-category revenue**
-- **Southwest is the strongest sales territory at approximately $24M**
-- **Linda C. Mitchell leads salesperson revenue at approximately $10.3M**
-- **Potential and Loyal Customers represent the largest RFM customer groups**
-- Most customers are currently classified as **Low or Medium churn risk**
 
 The final solution allows commercial performance to be analyzed across:
 
