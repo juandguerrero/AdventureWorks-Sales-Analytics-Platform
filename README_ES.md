@@ -4,7 +4,7 @@
 
 ## Descripción General del Proyecto
 
-**Adventure Works Cycles** es el fabricante y minorista ficticio de bicicletas representado en el dataset AdventureWorks de Microsoft.
+**Adventure Works Cycles** es el fabricante y minorista ficticio de bicicletas representado en el conjunto de datos AdventureWorks de Microsoft.
 
 La empresa vende **bicicletas, componentes, ropa y accesorios** en múltiples territorios geográficos a través de una red de clientes y representantes de ventas.
 
@@ -78,11 +78,15 @@ Insights de Negocio
 
 El flujo de trabajo completo es orquestado con **Apache Airflow**.
 
+![Diagrama de Arquitectura](docs/architecture/architecture_diagram.png)
+
 ---
 
 # Hallazgos de Negocio Detallados
 
 ## 1. Las ventas muestran patrones estacionales y semanales claros
+
+![Dashboard Ejecutivo de Ventas](docs/dashboards/executive_sales_dashboard.png)
 
 ### Hallazgos
 
@@ -102,13 +106,15 @@ Adventure Works puede utilizar estos patrones para alinear mejor el **inventario
 
 ## 2. Los ingresos están altamente concentrados en bicicletas
 
+![Analítica de Productos](docs/dashboards/product_analytics.png)
+
 ### Hallazgos
 
 - **Las bicicletas generan aproximadamente el 87.7% de los ingresos por categoría de producto.**
 - **Los componentes contribuyen aproximadamente con el 9.5%.**
 - La ropa y los accesorios representan únicamente una pequeña proporción de los ingresos totales por productos.
 - El análisis identifica los productos con mejor desempeño por mes.
-- Varias combinaciones de productos aparecen repetidamente en el análisis de **Frequently Bought Together**.
+- Varias combinaciones de productos aparecen repetidamente en el análisis de **Comprados Frecuentemente Juntos**.
 - El análisis de ingresos frente a ganancias identifica productos que generan ingresos sustanciales sin producir márgenes igualmente sólidos.
 
 ### Implicación para el Negocio
@@ -120,6 +126,8 @@ Al mismo tiempo, la menor contribución de los accesorios y la ropa sugiere opor
 ---
 
 ## 3. Southwest es el territorio de ventas más fuerte
+
+![Territorio de Ventas](docs/dashboards/sales_territory.png)
 
 ### Hallazgos
 
@@ -140,6 +148,8 @@ Southwest representa un mercado crítico en términos de ingresos, mientras que 
 
 ## 4. El desempeño de ventas se concentra entre varios representantes destacados
 
+![Desempeño de Vendedores](docs/dashboards/salesperson_performance.png)
+
 ### Hallazgos
 
 - **Linda C. Mitchell es la vendedora con mayores ingresos**, generando aproximadamente **$10.3M**.
@@ -157,6 +167,8 @@ Los representantes con mejores resultados pueden estudiarse para identificar pr�
 ---
 
 ## 5. El valor de los clientes está distribuido de manera desigual
+
+![Analítica de Clientes](docs/dashboards/customer_analytics.png)
 
 ### Hallazgos
 
@@ -177,35 +189,37 @@ Los clientes de alto valor que muestran una disminución en su nivel de activida
 
 ## 6. La segmentación RFM crea grupos de clientes accionables
 
+![Segmentación de Clientes](docs/dashboards/customer_segmentation.png)
+
 Utilicé **Análisis RFM — Recencia, Frecuencia y Valor Monetario —** para segmentar a los clientes según su comportamiento de compra.
 
 Los clientes fueron clasificados en:
 
-- Champions
-- Loyal Customers
-- Potential Customers
-- New Customers
-- At Risk
-- Lost Customers
+- Campeones
+- Clientes Leales
+- Clientes Potenciales
+- Clientes Nuevos
+- En Riesgo
+- Clientes Perdidos
 
 ### Hallazgos
 
-- **Potential Customers representa el segmento de clientes más grande.**
-- **Loyal Customers constituye otra parte importante de la base de clientes.**
-- Champions representa un grupo de clientes más pequeño pero estratégicamente valioso.
-- At-Risk y Lost Customers proporcionan grupos claramente identificables para esfuerzos de retención y reactivación.
+- **Los Clientes Potenciales representan el segmento de clientes más grande.**
+- **Los Clientes Leales constituyen otra parte importante de la base de clientes.**
+- Los Campeones representan un grupo de clientes más pequeño pero estratégicamente valioso.
+- Los clientes En Riesgo y Clientes Perdidos proporcionan grupos claramente identificables para esfuerzos de retención y reactivación.
 - Los ingresos varían sustancialmente entre los segmentos de clientes.
 
 ### Implicación para el Negocio
 
 Adventure Works puede utilizar diferentes estrategias para cada segmento:
 
-**Champions →** programas de fidelización y VIP  
-**Loyal Customers →** venta cruzada y retención  
-**Potential Customers →** incentivar compras recurrentes  
-**New Customers →** onboarding y campañas para una segunda compra  
-**At Risk →** campañas de retención dirigidas  
-**Lost Customers →** campañas de reactivación
+**Campeones →** programas de fidelización y VIP  
+**Clientes Leales →** venta cruzada y retención  
+**Clientes Potenciales →** incentivar compras recurrentes  
+**Clientes Nuevos →** onboarding y campañas para una segunda compra  
+**En Riesgo →** campañas de retención dirigidas  
+**Clientes Perdidos →** campañas de reactivación
 
 ---
 
@@ -216,27 +230,29 @@ La capa analítica incluye modelos SQL para:
 - Tendencias mensuales de ingresos
 - Crecimiento mes a mes
 - Análisis estacional de ventas
-- Customer Lifetime Value
+- Valor de vida del cliente
 - Riesgo de churn de clientes
 - Clientes inactivos
 - Segmentación RFM
 - Evolución de segmentos de clientes
 - Contribución por categoría de producto
 - Productos principales por mes
-- Productos comprados frecuentemente en conjunto
+- Productos comprados frecuentemente
 - Productos con altos ingresos / bajos márgenes
 - Crecimiento interanual por territorio
 - Desempeño de vendedores vs. territorio
 
 ### Técnicas SQL
 
-`CTEs` · `Window Functions` · `LAG()` · `LEAD()` · `DENSE_RANK()` · `NTILE()` · `CASE` · `Self Joins` · `Subqueries` · `Aggregations` · `Date Functions`
+`CTEs` · `Funciones de Ventana` · `LAG()` · `LEAD()` · `DENSE_RANK()` · `NTILE()` · `CASE` · `Self Joins` · `Subconsultas` · `Agregaciones` · `Funciones de Fecha`
 
 ---
 
 # Modelo de Datos
 
-La capa Gold utiliza un **Star Schema** preparado para análisis, diseñado para análisis SQL y reportes en Power BI.
+La capa Gold utiliza un **Star Schema** preparado para análisis y diseñado para análisis SQL y reportes en Power BI.
+
+![Star Schema](docs/architecture/star_schema.png)
 
 El modelo dimensional proporciona dimensiones consistentes de clientes, productos, territorios, vendedores y fechas para el análisis de negocio.
 
@@ -244,14 +260,14 @@ El modelo dimensional proporciona dimensiones consistentes de clientes, producto
 
 # Stack Tecnológico
 
-| **Área** | **Tecnologías** |
-| -------------------- | --------------------------------- |
+| Área | Tecnologías |
+|---|---|
 | Análisis de Datos | SQL, Power BI |
 | Visualización de Datos | Power BI |
 | Modelado de Datos | Star Schema, Modelado Dimensional |
 | Programación | Python |
 | Procesamiento de Datos | PySpark |
-| Almacenamiento Cloud | AWS S3 |
+| Almacenamiento en la Nube | AWS S3 |
 | Plataforma de Datos | Databricks |
 | Almacenamiento | Delta Lake |
 | Orquestación | Apache Airflow |
@@ -300,13 +316,13 @@ AdventureWorks/
 
 # Habilidades Demostradas
 
-### Data Analytics & BI
+### Analítica de Datos & BI
 
 - Análisis de negocio con SQL
 - Desarrollo de dashboards en Power BI
 - Análisis de KPIs
 - Análisis de tendencias y crecimiento
-- Customer Lifetime Value
+- Valor de vida del cliente
 - Análisis de churn
 - Segmentación RFM
 - Análisis de desempeño de productos
@@ -314,7 +330,7 @@ AdventureWorks/
 - Benchmarking de vendedores
 - Visualización de datos y storytelling
 
-### Data Engineering
+### Ingeniería de Datos
 
 - ETL con Python
 - AWS S3
