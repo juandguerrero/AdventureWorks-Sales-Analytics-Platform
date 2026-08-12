@@ -1,1 +1,460 @@
-# New-adventureworks-
+# AdventureWorks Sales & Customer Analytics
+
+**End-to-End Data Analytics | SQL · Power BI · Python · Databricks · PySpark · AWS S3 · Airflow**
+
+## Project Overview
+
+**AdventureWorks** is a simulated retail company with sales, customer, product, territory, and salesperson data distributed across multiple operational tables.
+
+I built an **end-to-end analytics solution** that transforms this raw data into business-ready datasets and interactive Power BI dashboards designed to analyze:
+
+- Sales performance and growth
+- Customer value and retention
+- Product and category performance
+- Geographic sales performance
+- Salesperson performance
+- Customer segmentation
+
+The project combines **data analysis, SQL, dimensional modeling, ETL, and Business Intelligence**, supported by an automated cloud data pipeline using **AWS S3, Databricks, PySpark, Delta Lake, and Apache Airflow**.
+
+> **Goal:** Transform raw AdventureWorks data into actionable insights that help business teams understand what drives revenue, which customers and products create the most value, and where performance can be improved.
+
+---
+
+## Business Questions
+
+The analysis was designed around practical business questions:
+
+- How is revenue changing over time?
+- Which months show the strongest and weakest sales performance?
+- How quickly is revenue growing month over month?
+- Which customers generate the most lifetime value?
+- Which customers show signs of churn or inactivity?
+- How can customers be segmented based on purchasing behavior?
+- Which product categories contribute the most revenue?
+- Which products are frequently purchased together?
+- Which high-revenue products have relatively low profitability?
+- Which sales territories generate the most revenue?
+- How are territories performing year over year?
+- Which salespeople outperform their territory benchmarks?
+
+---
+
+# Power BI Dashboards
+
+The Power BI solution contains **six analytical dashboard pages**, each focused on a different area of business performance.
+
+## 1. Executive Sales Dashboard
+
+![Executive Sales Dashboard](docs/dashboards/executive_sales_dashboard.png)
+
+Provides an executive-level view of overall sales performance.
+
+### Analysis Included
+
+- Monthly revenue trends
+- Month-over-month sales growth
+- Sales trend classification
+- Sales performance by day of the week
+- Seasonal sales patterns
+
+### Business Value
+
+Allows decision-makers to quickly identify sales trends, growth patterns, seasonality, and periods of stronger or weaker performance.
+
+---
+
+## 2. Customer Analytics
+
+![Customer Analytics](docs/dashboards/customer_analytics.png)
+
+Analyzes customer value, purchasing behavior, retention, and churn risk.
+
+### Analysis Included
+
+- Top customers by lifetime revenue
+- Cumulative revenue contribution
+- Customer churn-risk distribution
+- Customers inactive during the last 12 months
+- Average purchase interval by customer segment
+- RFM customer segmentation
+
+### Business Value
+
+Helps identify the company's most valuable customers while highlighting customers who may require retention or re-engagement actions.
+
+---
+
+## 3. Product Analytics
+
+![Product Analytics](docs/dashboards/product_analytics.png)
+
+Evaluates revenue contribution and performance across the product portfolio.
+
+### Analysis Included
+
+- Revenue by product category
+- Category contribution to total revenue
+- Top products by month
+- Products frequently purchased together
+- High-revenue products with low profit margins
+
+### Business Value
+
+Supports product, pricing, cross-selling, and merchandising decisions by identifying important categories, product combinations, and potential profitability issues.
+
+---
+
+## 4. Sales Territory Analysis
+
+![Sales Territory](docs/dashboards/sales_territory.png)
+
+Compares commercial performance across geographic territories.
+
+### Analysis Included
+
+- Revenue by territory
+- Year-over-year territory growth
+- Current-year vs. previous-year revenue
+
+### Business Value
+
+Makes it easier to identify high-performing markets, territories losing momentum, and geographic opportunities for growth.
+
+---
+
+## 5. Salesperson Performance
+
+![Salesperson Performance](docs/dashboards/salesperson_performance.png)
+
+Benchmarks individual salesperson results against territory performance.
+
+### Analysis Included
+
+- Revenue by salesperson
+- Territory average revenue
+- Salespeople performing above their territory average
+
+### Business Value
+
+Provides a clear benchmark for evaluating sales performance and identifying high-performing representatives.
+
+---
+
+## 6. Customer Segmentation
+
+![Customer Segmentation](docs/dashboards/customer_segmentation.png)
+
+Uses **RFM Analysis (Recency, Frequency, Monetary Value)** to group customers according to their purchasing behavior.
+
+### Analysis Included
+
+- Customer distribution by RFM segment
+- Revenue generated by customer segment
+- Customer segment progression
+
+### Business Value
+
+Creates actionable customer groups that can support retention, CRM, and targeted marketing strategies.
+
+---
+
+# SQL Business Analysis
+
+Rather than querying the warehouse only for basic totals, I created analytical SQL models designed to answer specific business questions.
+
+The analysis includes:
+
+- Monthly sales trends
+- Month-over-month revenue growth
+- Category revenue contribution
+- Top customers by lifetime value
+- Customer churn risk
+- Inactive customers
+- RFM customer segmentation
+- Customer segment progression
+- Average purchase interval by segment
+- Top products by month
+- Frequently purchased product combinations
+- High-revenue / low-profit products
+- Territory year-over-year growth
+- Salesperson vs. territory-average performance
+- Weekday sales patterns
+- Seasonal sales trends
+
+### SQL Techniques Used
+
+`CTEs` · `Window Functions` · `LAG()` · `LEAD()` · `DENSE_RANK()` · `NTILE()` · `CASE` · `Self Joins` · `Subqueries` · `Aggregations` · `Date Functions`
+
+---
+
+# Data Model
+
+The analytical layer uses a **Star Schema** designed for reporting and business analysis.
+
+![Star Schema](docs/architecture/star_schema.png)
+
+The Gold layer organizes cleaned business data into dimensions and fact tables, creating an analytics-ready model that simplifies SQL analysis and Power BI reporting.
+
+---
+
+# End-to-End Architecture
+
+![Architecture Diagram](docs/architecture/architecture_diagram.png)
+
+```text
+AdventureWorks CSV Data
+        │
+        ▼
+     AWS S3
+   Raw Storage
+        │
+        ▼
+Python Ingestion
+Validation + Logging
+        │
+        ▼
+   Databricks
+      PySpark
+        │
+        ▼
+┌─────────────────────┐
+│    Bronze Layer     │
+│      Raw Data       │
+├─────────────────────┤
+│    Silver Layer     │
+│    Cleaned Data     │
+├─────────────────────┤
+│     Gold Layer      │
+│    Star Schema      │
+└─────────────────────┘
+        │
+        ▼
+   SQL Analytics
+        │
+        ▼
+     Power BI
+        │
+        ▼
+ Business Insights
+```
+
+**Apache Airflow** orchestrates the end-to-end workflow from ingestion through analytical processing.
+
+![Airflow Pipeline](docs/architecture/airflow_pipeline.png)
+
+---
+
+# Technology Stack
+
+| Area | Technologies |
+|---|---|
+| Data Analysis | SQL, Power BI |
+| Data Visualization | Power BI |
+| Data Modeling | Star Schema, Dimensional Modeling |
+| Programming | Python |
+| Data Processing | PySpark |
+| Cloud Storage | AWS S3 |
+| Data Platform | Databricks |
+| Storage Format | Delta Lake |
+| Data Governance | Unity Catalog |
+| Orchestration | Apache Airflow |
+| Version Control | Git, GitHub |
+
+---
+
+# Data Pipeline
+
+## 1. Data Ingestion
+
+AdventureWorks source data is stored in **AWS S3** and extracted using Python.
+
+The ingestion process includes:
+
+- Source file extraction
+- File validation
+- Metadata validation
+- Logging
+- Upload to Databricks
+
+## 2. Bronze Layer
+
+Raw source data is ingested into the Databricks **Bronze Layer**, preserving the original structure for traceability.
+
+## 3. Silver Layer
+
+**PySpark** transformations clean and standardize the data.
+
+Processing includes:
+
+- Data type conversion
+- Null handling
+- Data validation
+- Standardization
+- Business-rule transformations
+
+## 4. Gold Layer
+
+Cleaned data is transformed into an analytics-ready **dimensional model using a Star Schema**.
+
+This layer provides structured fact and dimension tables optimized for business analysis and reporting.
+
+## 5. SQL Analytics
+
+Business-focused SQL models transform warehouse data into analytical datasets used to investigate:
+
+- Sales
+- Customers
+- Products
+- Territories
+- Salespeople
+- Customer behavior
+
+## 6. Power BI
+
+The analytical models are consumed by **Power BI** to create interactive dashboards for business decision-making.
+
+## 7. Airflow Orchestration
+
+**Apache Airflow** coordinates the end-to-end workflow and automates execution of the pipeline.
+
+---
+
+# Repository Structure
+
+```text
+AdventureWorks/
+│
+├── airflow/
+│   └── dags/
+│       └── adventureworks_pipeline.py
+│
+├── config/
+│   ├── __init__.py
+│   ├── config.py
+│   └── logger.py
+│
+├── data/
+│   └── raw/
+│       ├── address/
+│       ├── country_region/
+│       ├── customer/
+│       ├── employee/
+│       ├── person/
+│       ├── product/
+│       ├── product_category/
+│       ├── product_subcategory/
+│       ├── sales_order_detail/
+│       ├── sales_order_header/
+│       ├── sales_person/
+│       ├── sales_territory/
+│       └── state_province/
+│
+├── databricks/
+│   ├── 01_bronze.py
+│   ├── 02_silver.py
+│   ├── 03_gold.py
+│   └── 04_sql_analytics.py
+│
+├── docs/
+│   ├── architecture/
+│   │   ├── airflow_pipeline.png
+│   │   ├── architecture_diagram.png
+│   │   └── star_schema.png
+│   │
+│   └── dashboards/
+│       ├── customer_analytics.png
+│       ├── customer_segmentation.png
+│       ├── executive_sales_dashboard.png
+│       ├── product_analytics.png
+│       ├── sales_territory.png
+│       └── salesperson_performance.png
+│
+├── ingestion/
+│   ├── run_pipeline.py
+│   └── scripts/
+│       ├── __init__.py
+│       ├── s3_extractor.py
+│       └── upload_to_databricks_volume.py
+│
+├── powerbi/
+│   └── AdventureWorksDashboard.pbix
+│
+├── scripts/
+│   ├── __init__.py
+│   ├── s3_extractor.py
+│   └── upload_to_databricks_volume.py
+│
+├── .gitignore
+├── README.md
+└── requirements.txt
+```
+
+---
+
+# Skills Demonstrated
+
+This project demonstrates practical skills relevant to **Junior Data Analyst and BI Analyst roles**:
+
+### Data Analysis & Business Intelligence
+
+- Translating business questions into data analysis
+- SQL querying and analytical modeling
+- Power BI dashboard development
+- KPI analysis
+- Trend and growth analysis
+- Customer segmentation
+- Customer lifetime value analysis
+- Churn analysis
+- Product performance analysis
+- Sales and territory analysis
+- Data visualization and storytelling
+
+### Data Preparation & Modeling
+
+- Data cleaning and validation
+- Star Schema design
+- Dimensional modeling
+- Analytics-ready data preparation
+- Business-rule implementation
+
+### Data Engineering
+
+- Python-based data ingestion
+- ETL pipeline development
+- PySpark transformations
+- Databricks Medallion Architecture
+- AWS S3 cloud storage
+- Delta Lake
+- Apache Airflow orchestration
+
+---
+
+# Project Highlights
+
+- Built an **end-to-end analytics solution** from raw data to executive dashboards
+- Developed business-focused analysis using **advanced SQL**
+- Designed an analytics-ready **Star Schema**
+- Built **6 Power BI dashboard pages** covering sales, customers, products, territories, salespeople, and segmentation
+- Applied **RFM analysis** for behavioral customer segmentation
+- Analyzed **customer lifetime value and churn risk**
+- Evaluated **month-over-month and year-over-year performance**
+- Implemented a **Bronze → Silver → Gold Medallion Architecture**
+- Automated data processing using **Python, PySpark, and Apache Airflow**
+- Integrated **AWS S3 and Databricks** into the analytics workflow
+
+---
+
+# Future Improvements
+
+- Incremental data loading
+- Automated data-quality monitoring
+- CI/CD with GitHub Actions
+- Docker containerization
+- Infrastructure as Code with Terraform
+
+---
+
+## About This Project
+
+This project was developed as part of my data analytics portfolio to demonstrate how **SQL, Power BI, data modeling, and business analysis** can be combined with modern data-engineering technologies to transform raw operational data into actionable business insights.
